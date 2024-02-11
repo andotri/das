@@ -5,7 +5,8 @@
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header">Chats</div>
+        <div class="card-header">Room {{ $room_id }}</div>
+        <input type="hidden" id="room_id" name="room_id" value="{{ $room_id }}">
         <div class="card-body">
             <chat-messages :messages="messages"></chat-messages>
         </div>

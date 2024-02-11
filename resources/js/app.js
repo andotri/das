@@ -34,13 +34,14 @@ Vue.component('chat-form', require('./components/ChatForm.vue').default);
 const app = new Vue({
     el: '#app',
     data: {
-        messages: []
+        messages: [],
+        room_id: document.getElementById('room_id').value
     },
 
     created() {
         this.fetchMessages();
 
-        window.Echo.private('chat')
+        window.Echo.private(this.room_id)
             .listen('MessageSent', (e) => {
                 this.messages.push({
                     message: e.message.message,
@@ -51,15 +52,22 @@ const app = new Vue({
 
     methods: {
         fetchMessages() {
-            axios.get('/messages').then(response => {
+            axios.get(`/messages/${this.room_id}`).then(response => {
                 this.messages = response.data;
+            }).catch(error => {
+                console.error('Error fetching messages:', error);
             });
         },
 
         addMessage(message) {
+            const data = {
+                room_id: this.room_id,
+                message: message.message
+            };
+
             this.messages.push(message);
 
-            axios.post('/messages', message).then(response => {
+            axios.post('/messages', data).then(response => {
                 console.log(response.data);
             });
         }
