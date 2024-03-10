@@ -8,11 +8,15 @@
             :key="message.id"
             :class="{ 'fade-in': message.animation }"
         >
-            {{ message.user.name }}:
-            <p v-if="message.animation" class="message-with-animation">
-                {{ message.message }}
-            </p>
-            <p v-else>{{ message.message }}</p>
+            👨‍💻 <strong>{{ message.user.name }}</strong>
+            <div v-if="message.animation" class="message-with-animation">
+                {{ message.question }}
+            </div>
+            <div v-else>{{ message.question }}</div>
+
+            🤖 <strong>Chat Assistant</strong>
+            <div v-if="message.animation" class="message-with-animation" v-html="message.answer"></div>
+            <div v-else v-html="message.answer"></div>
         </li>
     </ul>
 </template>

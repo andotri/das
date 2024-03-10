@@ -35,7 +35,7 @@ const app = new Vue({
     el: '#app',
     data: {
         messages: [],
-        room_id: document.getElementById('room_id').value
+        room_id: document.getElementById('room_id').value,
     },
 
     created() {
@@ -44,7 +44,8 @@ const app = new Vue({
         window.Echo.private(this.room_id)
             .listen('MessageSent', (e) => {
                 this.messages.push({
-                    message: e.message.message,
+                    question: e.message.question,
+                    answer: e.message.answer,
                     user: e.user,
                     animation: true
                 });
@@ -63,19 +64,13 @@ const app = new Vue({
             });
         },
 
-        addMessage(message) {
-            const data = {
-                room_id: this.room_id,
-                message: message.message
-            };
-
-            this.messages.push(message);
-
+        addMessage(data) {
             this.disableInputs();
             setTimeout(this.enableInputs, 5000);
 
             axios.post('/messages', data).then(response => {
-                console.log(response.data);
+                data.answer = response.data.answer
+                this.messages.push(data);
             });
         },
 

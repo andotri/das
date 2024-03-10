@@ -5,10 +5,10 @@
     <input
       id="btn-input"
       type="text"
-      name="message"
+      name="question"
       class="form-control input-sm"
       placeholder="Message ChatAssistant…"
-      v-model="newMessage"
+      v-model="question"
       @keyup.enter="sendMessage"
     />
 
@@ -26,18 +26,20 @@ export default {
 
   data() {
     return {
-      newMessage: "",
+      question: "",
+      room_id: "",
     };
   },
 
   methods: {
     sendMessage() {
       this.$emit("messagesent", {
+        room_id: document.getElementById('room_id').value,
         user: this.user,
-        message: this.newMessage,
+        question: this.question,
       });
 
-      this.newMessage = "";
+      this.question = "";
     },
   },
 };

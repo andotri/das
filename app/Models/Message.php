@@ -9,7 +9,7 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['room_id', 'message'];
+    protected $fillable = ['room_id', 'question', 'answer'];
 
     /**
      * A message belong to a user

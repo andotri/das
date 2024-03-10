@@ -2091,16 +2091,18 @@ __webpack_require__.r(__webpack_exports__);
   props: ["user"],
   data: function data() {
     return {
-      newMessage: ""
+      question: "",
+      room_id: ""
     };
   },
   methods: {
     sendMessage: function sendMessage() {
       this.$emit("messagesent", {
+        room_id: document.getElementById('room_id').value,
         user: this.user,
-        message: this.newMessage
+        question: this.question
       });
-      this.newMessage = "";
+      this.question = "";
     }
   }
 });
@@ -2118,6 +2120,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
+//
+//
 //
 //
 //
@@ -2226,7 +2232,8 @@ var app = new Vue({
     this.fetchMessages();
     window.Echo["private"](this.room_id).listen('MessageSent', function (e) {
       _this.messages.push({
-        message: e.message.message,
+        question: e.message.question,
+        answer: e.message.answer,
         user: e.user,
         animation: true
       });
@@ -2246,16 +2253,15 @@ var app = new Vue({
         console.error('Error fetching messages:', error);
       });
     },
-    addMessage: function addMessage(message) {
-      var data = {
-        room_id: this.room_id,
-        message: message.message
-      };
-      this.messages.push(message);
+    addMessage: function addMessage(data) {
+      var _this3 = this;
+
       this.disableInputs();
       setTimeout(this.enableInputs, 5000);
       axios.post('/messages', data).then(function (response) {
-        console.log(response.data);
+        data.answer = response.data.answer;
+
+        _this3.messages.push(data);
       });
     },
     disableInputs: function disableInputs() {
@@ -44516,18 +44522,18 @@ var render = function() {
         {
           name: "model",
           rawName: "v-model",
-          value: _vm.newMessage,
-          expression: "newMessage"
+          value: _vm.question,
+          expression: "question"
         }
       ],
       staticClass: "form-control input-sm",
       attrs: {
         id: "btn-input",
         type: "text",
-        name: "message",
+        name: "question",
         placeholder: "Message ChatAssistant…"
       },
-      domProps: { value: _vm.newMessage },
+      domProps: { value: _vm.question },
       on: {
         keyup: function($event) {
           if (
@@ -44542,7 +44548,7 @@ var render = function() {
           if ($event.target.composing) {
             return
           }
-          _vm.newMessage = $event.target.value
+          _vm.question = $event.target.value
         }
       }
     }),
@@ -44594,14 +44600,25 @@ var render = function() {
           class: { "fade-in": message.animation }
         },
         [
-          _vm._v("\n        " + _vm._s(message.user.name) + ":\n        "),
+          _vm._v("\n        👨‍💻 "),
+          _c("strong", [_vm._v(_vm._s(message.user.name))]),
+          _vm._v(" "),
           message.animation
-            ? _c("p", { staticClass: "message-with-animation" }, [
+            ? _c("div", { staticClass: "message-with-animation" }, [
                 _vm._v(
-                  "\n            " + _vm._s(message.message) + "\n        "
+                  "\n            " + _vm._s(message.question) + "\n        "
                 )
               ])
-            : _c("p", [_vm._v(_vm._s(message.message))])
+            : _c("div", [_vm._v(_vm._s(message.question))]),
+          _vm._v("\n\n        🤖 "),
+          _c("strong", [_vm._v("Chat Assistant")]),
+          _vm._v(" "),
+          message.animation
+            ? _c("div", {
+                staticClass: "message-with-animation",
+                domProps: { innerHTML: _vm._s(message.answer) }
+              })
+            : _c("div", { domProps: { innerHTML: _vm._s(message.answer) } })
         ]
       )
     }),
