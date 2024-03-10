@@ -48,6 +48,9 @@ const app = new Vue({
                     user: e.user,
                     animation: true
                 });
+
+                this.disableInputs();
+                setTimeout(this.enableInputs, 5000);
             });
     },
 
@@ -68,9 +71,20 @@ const app = new Vue({
 
             this.messages.push(message);
 
+            this.disableInputs();
+            setTimeout(this.enableInputs, 5000);
+
             axios.post('/messages', data).then(response => {
                 console.log(response.data);
             });
+        },
+
+        disableInputs() {
+            $('#btn-chat, #btn-input').prop('disabled', true);
+        },
+
+        enableInputs() {
+            $('#btn-chat, #btn-input').prop('disabled', false);
         }
     }
 });

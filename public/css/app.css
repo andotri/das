@@ -10002,3 +10002,6 @@ h3 {
     border-color: #dee2e6;
   }
 }
+.btn-sm, .btn-group-sm > .btn {
+  font-size: 1.1rem;
+}

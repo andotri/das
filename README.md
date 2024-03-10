@@ -1,3 +1,4 @@
+Laravel Framework 8.58.0
 ## About The Project
 
 This is the final codebase for our [Pusher tutorial](https://pusher.com/tutorials/how-to-build-a-chat-app-with-vue-js-and-laravel/).

@@ -6,3 +6,8 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Custom styles
+.btn-sm, .btn-group-sm > .btn {
+    font-size: 1.1rem;
+}

@@ -2230,6 +2230,10 @@ var app = new Vue({
         user: e.user,
         animation: true
       });
+
+      _this.disableInputs();
+
+      setTimeout(_this.enableInputs, 5000);
     });
   },
   methods: {
@@ -2248,9 +2252,17 @@ var app = new Vue({
         message: message.message
       };
       this.messages.push(message);
+      this.disableInputs();
+      setTimeout(this.enableInputs, 5000);
       axios.post('/messages', data).then(function (response) {
         console.log(response.data);
       });
+    },
+    disableInputs: function disableInputs() {
+      $('#btn-chat, #btn-input').prop('disabled', true);
+    },
+    enableInputs: function enableInputs() {
+      $('#btn-chat, #btn-input').prop('disabled', false);
     }
   }
 });
@@ -44513,7 +44525,7 @@ var render = function() {
         id: "btn-input",
         type: "text",
         name: "message",
-        placeholder: "Type your message here..."
+        placeholder: "Message ChatAssistant…"
       },
       domProps: { value: _vm.newMessage },
       on: {
